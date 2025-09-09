@@ -1,6 +1,6 @@
 {
   "name": "@intility/helm-version",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Automatically version helm charts with npm version.",
   "bin": {
     "helm-version": "index.js"
