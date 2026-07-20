@@ -26,7 +26,14 @@ if (process.argv.length > 2) {
   if (appVersionDiff !== null) {
     // get helm version and apply the app version diff
     const prevHelmVersion = helmChart.get("version");
-    const newHelmVersion = semver.inc(prevHelmVersion, appVersionDiff);
+
+    // carry over the prerelease identifier (e.g. "beta") so an appVersion
+    // like 4.2.1-beta.2 doesn't collapse to a numeric-only 4.2.1-2
+    const prerelease = semver.prerelease(newAppVersion);
+    const identifier =
+      prerelease && typeof prerelease[0] === "string" ? prerelease[0] : undefined;
+
+    const newHelmVersion = semver.inc(prevHelmVersion, appVersionDiff, identifier);
 
     // apply the new versions
     helmChart.set("version", newHelmVersion);
